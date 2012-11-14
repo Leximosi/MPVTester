@@ -18,11 +18,14 @@ class ValidateFileDir(argparse.Action):
 
 class CreateZip:
 	def __init__(self, packageName, files):
-		self.files			= files
+		self.files		= files
 		self.packageName	= packageName + '.zip'
-		self.zip			= zipfile.ZipFile(self.packageName, mode='w')
 
 	def buildPackage(self):
+		if os.path.isfile(self.packageName):
+			return
+
+		self.zip = zipfile.ZipFile(self.packageName, mode='w')
 		try:
 			for file in self.files:
 				self.zip.write(file)
