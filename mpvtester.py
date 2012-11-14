@@ -18,7 +18,17 @@ class ValidateFileDir(argparse.Action):
 
 class CreateZip:
 	def __init__(self, packageName, files):
-		self.files		= files
+		self.files			= files
+
+		if len(files) == 1:
+			try:
+				zip = zipfile.ZipFile(files[0], mode='r')
+				self.packageName = files[0]
+				zip.close()
+				return
+			except IOError:
+				pass
+
 		self.packageName	= packageName + '.zip'
 
 	def buildPackage(self):
